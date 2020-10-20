@@ -1,14 +1,12 @@
 <script>
   import {
     PaginationNav,
-    UnorderedList,
     TextInput,
-    ListItem,
     Search,
     Button,
     Column,
-    Grid,
-    Row,
+    Tile,
+    Row
   } from "carbon-components-svelte";
   import { onMount } from "svelte";
   import * as api from 'api';
@@ -19,7 +17,7 @@
   let texts = []
   let total = 1
   let s = false
-  let text_v = false
+  let text_i = false
   let page = 0
   let text
   let res = {}
@@ -40,7 +38,10 @@
   }
 
   let add = async function() {
-    console.log('log')
+    if (text.length > 37) {
+      text_i = true
+      return
+    }
     res = await api.post(`add/${text}`)
     total = res.meta.total_pages
     texts = res.data
@@ -85,9 +86,9 @@
 
 <Row>
   <TextInput
-    invalid={text_v}
+    invalid={text_i}
     bind:value={text}
-    invalidText="More than 21 charactars" />
+    invalidText="More than 37 characters" />
   <Button
     icon={Add20}
     hasIconOnly
@@ -98,14 +99,9 @@
 </Row>
 
 <Row>
-  <Column noGutter>
+  <Column>
     {#each texts as text(text.id)}
-      <div 
-        style= "padding: 3px;
-                margin: 7px;
-                height: 37px;
-                verticalAlign: center;
-                background-color: rgb(237, 237, 237)">{text.body}</div>
+      <Tile>{text.body}</Tile>
     {/each}
     <PaginationNav bind:page={page} loop total={total} />
   </Column>
