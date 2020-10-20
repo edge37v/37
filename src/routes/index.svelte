@@ -1,85 +1,113 @@
 <script>
   import {
-    Content,
-    Breadcrumb,
-    BreadcrumbItem,
+    PaginationNav,
+    UnorderedList,
+    TextInput,
+    ListItem,
+    Search,
+    Button,
+    Column,
     Grid,
     Row,
-    Column,
-    Tabs,
-    TabContent,
-    Tab,
-    Select,
-    SelectItem,
   } from "carbon-components-svelte";
+  import { onMount } from "svelte";
+  import * as api from 'api';
+  import Search16 from "carbon-icons-svelte/lib/Search16";
+  import Add20 from "carbon-icons-svelte/lib/Add20";
 
-  import { getContext } from "svelte";
+  let av = false
+  let texts = []
+  let total = 1
+  let s = false
+  let page = 0
+  let text
+  let res = {}
+  let q = ''
 
-  const { carbon_theme } = getContext("Theme");
+  let av_t = function() {
+    av = !av
+  }
+
+  $: snc(q, page)
+
+  let snc = function() {
+    if (q != '') {
+      search()
+    } else {
+      get()
+    }
+  }
+
+  let add = async function() {
+    console.log('log')
+    res = await api.post(`add/${text}`)
+    total = res.meta.total_pages
+    texts = res.data
+  }
+
+  let search = async function() {
+    res = await api.get(`search?q=${q}&page=${page+1}`)
+    total = res.meta.total_pages
+    texts = res.data
+    s = true
+  }
+  
+  let get = async function() {
+    res = await api.get(`texts?page=${page+1}`)
+    total = res.meta.total_pages
+    texts = res.data
+  }
+
+  onMount(() => {
+    get()
+  })
 </script>
 
 <Row>
-  <Column lg="{16}">
-    <Breadcrumb noTrailingSlash aria-label="Page navigation">
-      <BreadcrumbItem href="/">Getting started</BreadcrumbItem>
-    </Breadcrumb>
-    <h1 style="margin-bottom: 1.5rem">Design &amp; build with Carbon</h1>
-  </Column>
+  <Search
+    bind:value={q} />
+  <Button 
+    icon={Search16}
+    hasIconOnly
+    on:click={search}
+    tooltipPosition="bottom"
+    tooltipAlignment="center"
+    iconDescription="Search" />
+  <Button
+    icon={Add20}
+    hasIconOnly
+    on:click={av_t}
+    tooltipPosition="bottom"
+    tooltipAlignment="center"
+    iconDescription="Add Note" />
 </Row>
+
+<Grid>
+<Row>
+  <TextInput
+    maxlength=37
+    size=37
+    bind:value={text} />
+  <Button
+    icon={Add20}
+    hasIconOnly
+    on:click={add}
+    tooltiipPosition="bottom"
+    tooltipAlignment="center"
+    iconDescription="Submit" />
+</Row>
+</Grid>
+
+<div>{page}</div>
+<div>{q}</div>
 
 <Row>
   <Column noGutter>
-    <Tabs aria-label="Tab navigation">
-      <Tab label="About" />
-      <Tab label="Design" />
-      <Tab label="Develop" />
-      <div slot="content" class="tabbed-content">
-        <Grid as fullWidth let:props>
-          <TabContent {...props}>
-            <Row>
-              <Column md="{4}" lg="{7}">
-                <Select
-                  labelText="Carbon theme"
-                  bind:selected="{$carbon_theme}"
-                  style="margin-bottom: 1rem"
-                >
-                  <SelectItem value="white" text="White" />
-                  <SelectItem value="g10" text="Gray 10" />
-                  <SelectItem value="g90" text="Gray 90" />
-                  <SelectItem value="g100" text="Gray 100" />
-                </Select>
-                <p>
-                  Carbon is IBM’s open-source design system for digital products
-                  and experiences. With the IBM Design Language as its
-                  foundation, the system consists of working code, design tools
-                  and resources, human interface guidelines, and a vibrant
-                  community of contributors.
-                </p>
-              </Column>
-            </Row>
-          </TabContent>
-          <TabContent {...props}>
-            <Row>
-              <Column md="{4}" lg="{7}">
-                <p>
-                  Rapidly build beautiful and accessible experiences. The Carbon
-                  kit contains all resources you need to get started.
-                </p>
-              </Column>
-            </Row>
-          </TabContent>
-          <TabContent {...props}>
-            <Row>
-              <Column md="{4}" lg="{7}">
-                <p>
-                  Carbon provides styles and components in Vanilla, React,
-                  Angular, Vue and Svelte for anyone building on the web.
-                </p>
-              </Column>
-            </Row>
-          </TabContent>
-        </Grid>
-      </div>
-    </Tabs>
+   <UnorderedList>
+    {#each texts as text(text.id)}
+      <ListItem>{text.body}</ListItem>
+    {/each}
+   </UnorderedList>
   </Column>
+  <PaginationNav bind:page={page} loop total={total} />
 </Row>

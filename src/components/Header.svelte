@@ -1,5 +1,5 @@
 <script>
-  export let segment = undefined;
+  export const segment = undefined;
 
   import {
     SkipToContent,
@@ -25,13 +25,8 @@
   }
 </script>
 
-<Header company="IBM" platformName="Carbon Components Svelte" href="/">
+<Header company="37" platformName="" href="/">
   <div slot="skip-to-content">
     <SkipToContent />
   </div>
-  <HeaderUtilities>
-    <HeaderGlobalAction aria-label="Notifications" icon="{Notification20}" />
-    <HeaderGlobalAction aria-label="User Avatar" icon="{UserAvatar20}" />
-    <HeaderGlobalAction aria-label="App Switcher" icon="{AppSwitcher20}" />
-  </HeaderUtilities>
 </Header>
