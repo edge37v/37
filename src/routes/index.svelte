@@ -19,6 +19,7 @@
   let texts = []
   let total = 1
   let s = false
+  let text_v = false
   let page = 0
   let text
   let res = {}
@@ -82,12 +83,11 @@
     iconDescription="Add Note" />
 </Row>
 
-<Grid>
 <Row>
   <TextInput
-    maxlength=37
-    size=37
-    bind:value={text} />
+    invalid={text_v}
+    bind:value={text}
+    invalidText="More than 21 charactars" />
   <Button
     icon={Add20}
     hasIconOnly
@@ -96,18 +96,17 @@
     tooltipAlignment="center"
     iconDescription="Submit" />
 </Row>
-</Grid>
-
-<div>{page}</div>
-<div>{q}</div>
 
 <Row>
   <Column noGutter>
-   <UnorderedList>
     {#each texts as text(text.id)}
-      <ListItem>{text.body}</ListItem>
+      <div 
+        style= "padding: 3px;
+                margin: 7px;
+                height: 37px;
+                verticalAlign: center;
+                background-color: rgb(237, 237, 237)">{text.body}</div>
     {/each}
-   </UnorderedList>
+    <PaginationNav bind:page={page} loop total={total} />
   </Column>
-  <PaginationNav bind:page={page} loop total={total} />
 </Row>

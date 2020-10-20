@@ -3,9 +3,7 @@
 
   import {
     SkipToContent,
-    Header,
-    HeaderUtilities,
-    HeaderGlobalAction,
+    Header
   } from "carbon-components-svelte";
   import Notification20 from "carbon-icons-svelte/lib/Notification20";
   import UserAvatar20 from "carbon-icons-svelte/lib/UserAvatar20";
@@ -24,9 +22,3 @@
     ctx.updateVar("--cds-productive-heading-06-font-size", "4rem");
   }
 </script>
-
-<Header company="37" platformName="" href="/">
-  <div slot="skip-to-content">
-    <SkipToContent />
-  </div>
-</Header>
