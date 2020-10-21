@@ -12,7 +12,14 @@ module.exports = {
         "ecmaVersion": 12,
         "sourceType": "module"
     },
+    "overrides": [
+        {
+            files: ["*.svelte"],
+            processor: "svelte3/svelte3"
+        }
+    ],
     "plugins": [
+        "svelte",
         "@typescript-eslint"
     ],
     "rules": {
