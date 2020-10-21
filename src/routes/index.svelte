@@ -2,7 +2,6 @@
   import {
     PaginationNav,
     TextInput,
-    Search,
     Button,
     Column,
     Tile,
@@ -10,10 +9,8 @@
   } from "carbon-components-svelte";
   import { onMount } from "svelte";
   import * as api from 'api';
-  import Search16 from "carbon-icons-svelte/lib/Search16";
   import Add20 from "carbon-icons-svelte/lib/Add20";
 
-  let av = false
   let texts = []
   let total = 1
   let s = false
@@ -22,10 +19,6 @@
   let text
   let res = {}
   let q = ''
-
-  let av_t = function() {
-    av = !av
-  }
 
   $: snc(q, page)
 

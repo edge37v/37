@@ -19,7 +19,7 @@ module.exports = {
         }
     ],
     "plugins": [
-        "svelte",
+        "svelte3",
         "@typescript-eslint"
     ],
     "rules": {

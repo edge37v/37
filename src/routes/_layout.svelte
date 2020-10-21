@@ -1,25 +1,14 @@
 <script>
-  export let segment = undefined;
-
   import {
     Content,
-    Breadcrumb,
-    BreadcrumbItem,
-    Grid,
-    Row,
-    Column,
-    Tabs,
-    TabContent,
-    Tab,
-    Select,
-    SelectItem,
+    Grid
   } from "carbon-components-svelte";
   import Header from "../components/Header.svelte";
   import Theme from "../components/Theme.svelte";
 </script>
 
 <Theme persist theme="g10">
-  <Header segment="{segment}" />
+  <Header />
   <Content style="background: none; padding: 1rem">
     <Grid>
       <slot />
